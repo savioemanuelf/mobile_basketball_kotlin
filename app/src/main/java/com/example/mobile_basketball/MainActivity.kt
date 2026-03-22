@@ -1,6 +1,9 @@
 package com.example.mobile_basketball
 
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -15,14 +18,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var pTimeA: TextView
     private lateinit var pTimeB: TextView
-
-    private lateinit var bTresPontosTimeA: Button
-    private lateinit var bDoisPontosTimeA: Button
-    private lateinit var bTLivreTimeA: Button
-    private lateinit var bTresPontosTimeB: Button
-    private lateinit var bDoisPontosTimeB: Button
-    private lateinit var bTLivreTimeB: Button
-    private lateinit var bReiniciar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +55,6 @@ class MainActivity : AppCompatActivity() {
     fun adicionarPontos(pontos: Int, time: String) {
         if(time == "A"){
             pontuacaoTimeA += pontos
-
         }else {
             pontuacaoTimeB += pontos
 
@@ -71,8 +65,18 @@ class MainActivity : AppCompatActivity() {
     fun atualizaPlacar(time: String){
         if(time == "A"){
             pTimeA.setText(pontuacaoTimeA.toString())
+            pTimeA.setTextColor(Color.parseColor("#d60000"))
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                pTimeA.setTextColor(getColor(android.R.color.white))
+            }, 600)
         }else {
             pTimeB.setText(pontuacaoTimeB.toString())
+            pTimeB.setTextColor(Color.parseColor("#6200EE"))
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                pTimeB.setTextColor(getColor(android.R.color.white))
+            }, 600)
         }
     }
 

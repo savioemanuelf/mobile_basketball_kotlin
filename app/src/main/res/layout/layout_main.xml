@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.seu.pacote">
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp">
+    tools:context="com.example.mobile_basketball.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,8 +25,10 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="Time A"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif"/>
+                android:textSize="17sp"
+                android:textColor="#d60000"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/placarTimeA"
@@ -34,28 +38,36 @@
                 android:padding="4dp"
                 android:text="0"
                 android:textSize="54sp"
-                android:fontFamily="sans-serif"/>
+                android:fontFamily="sans-serif"
+                android:backgroundTint="#d60000"/>
 
             <Button
                 android:id="@+id/tresPontosA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="+3 PONTOS" />
+                android:text="+3 PONTOS"
+                android:backgroundTint="#d60000"
+                />
 
             <Button
                 android:id="@+id/doisPontosA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="+2 PONTOS" />
+                android:text="+2 PONTOS"
+                android:backgroundTint="#d60000"
+
+                />
 
             <Button
                 android:id="@+id/tiroLivreA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Tiro Livre" />
+                android:text="Tiro Livre"
+                android:backgroundTint="#d60000"
+                />
         </LinearLayout>
 
         <View
@@ -77,8 +89,11 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="Time B"
-                android:textSize="14sp"
-                android:fontFamily="sans-serif"/>
+                android:textColor="#6200EE"
+                android:textSize="17sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                />
 
             <TextView
                 android:id="@+id/placarTimeB"
@@ -119,7 +134,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Reiniciar Partida"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:textSize="14sp"
+        android:textColor="@color/white"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="32dp"/>
+        android:layout_margin="32dp"
+        android:textStyle="bold"
+        />
 </RelativeLayout>
