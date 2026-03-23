@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var pTimeA: TextView
     private lateinit var pTimeB: TextView
+    private var corPadraoTimeA: Int = Color.WHITE
+    private var corPadraoTimeB: Int = Color.WHITE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
         pTimeA = findViewById(R.id.placarTimeA)
         pTimeB = findViewById(R.id.placarTimeB)
+        corPadraoTimeA = pTimeA.currentTextColor
+        corPadraoTimeB = pTimeB.currentTextColor
 
         val bTresPontosTimeA: Button = findViewById(R.id.tresPontosA)
         val bDoisPontosTimeA: Button = findViewById(R.id.doisPontosA)
@@ -68,14 +72,14 @@ class MainActivity : AppCompatActivity() {
             pTimeA.setTextColor(Color.parseColor("#d60000"))
 
             Handler(Looper.getMainLooper()).postDelayed({
-                pTimeA.setTextColor(getColor(android.R.color.white))
+                pTimeA.setTextColor(corPadraoTimeA)
             }, 600)
         }else {
             pTimeB.setText(pontuacaoTimeB.toString())
             pTimeB.setTextColor(Color.parseColor("#6200EE"))
 
             Handler(Looper.getMainLooper()).postDelayed({
-                pTimeB.setTextColor(getColor(android.R.color.white))
+                pTimeB.setTextColor(corPadraoTimeB)
             }, 600)
         }
     }
