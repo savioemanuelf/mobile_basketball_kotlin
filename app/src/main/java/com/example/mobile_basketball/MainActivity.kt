@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
     private var pontuacaoTimeA: Int = 0;
@@ -23,12 +22,38 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.layout_cadastro)
+
+        val editNomeTimeA: EditText = findViewById(R.id.editNomeTimeA)
+        val editNomeTimeB: EditText = findViewById(R.id.editNomeTimeB)
+        val btnIniciar: Button = findViewById(R.id.btnIniciar)
+
+        btnIniciar.setOnClickListener {
+            val nomeTimeA = editNomeTimeA.text.toString().trim()
+            val nomeTimeB = editNomeTimeB.text.toString().trim()
+
+            if (nomeTimeA.isEmpty() || nomeTimeB.isEmpty()) {
+                Toast.makeText(this, "Preencha o nome dos dois times!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            iniciarPlacar(nomeTimeA, nomeTimeB)
+        }
+    }
+
+    fun iniciarPlacar(nomeTimeA: String, nomeTimeB: String) {
         setContentView(R.layout.layout_main)
 
         pTimeA = findViewById(R.id.placarTimeA)
         pTimeB = findViewById(R.id.placarTimeB)
         corPadraoTimeA = pTimeA.currentTextColor
         corPadraoTimeB = pTimeB.currentTextColor
+
+        val txtTimeA: TextView = findViewById(R.id.timeA)
+        val txtTimeB: TextView = findViewById(R.id.timeB)
+        txtTimeA.text = nomeTimeA
+        txtTimeB.text = nomeTimeB
 
         val bTresPontosTimeA: Button = findViewById(R.id.tresPontosA)
         val bDoisPontosTimeA: Button = findViewById(R.id.doisPontosA)
@@ -51,9 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         bTLivreTimeB.setOnClickListener { adicionarPontos(1, "B") }
 
-        bReiniciar.setOnClickListener { reiniciarPartida() }
-
-
+        bReiniciar.setOnClickListener { confirmarReinicio() }
     }
 
     fun adicionarPontos(pontos: Int, time: String) {
@@ -84,12 +107,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun confirmarReinicio() {
+        AlertDialog.Builder(this)
+            .setTitle("Reiniciar Partida")
+            .setMessage("Tem certeza que deseja reiniciar o placar?")
+            .setPositiveButton("Sim") { _, _ ->
+                reiniciarPartida()
+            }
+            .setNegativeButton("Não", null)
+            .show()
+    }
+
     fun reiniciarPartida() {
         pontuacaoTimeA = 0
         pTimeA.setText(pontuacaoTimeA.toString())
         pontuacaoTimeB = 0
         pTimeB.setText(pontuacaoTimeB.toString())
-        Toast.makeText(this,"Placar reiniciado",Toast.LENGTH_SHORT).show()
-
+        Toast.makeText(this, "Placar reiniciado", Toast.LENGTH_SHORT).show()
     }
 }
