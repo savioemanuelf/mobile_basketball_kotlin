@@ -1,15 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="32dp"
+    android:paddingTop="16dp"
     android:paddingBottom="32dp">
-    tools:context="com.example.mobile_basketball.MainActivity">
 
     <LinearLayout
+        android:id="@+id/secaoCronometro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/txtPeriodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1º PERÍODO"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/darker_gray"/>
+
+        <TextView
+            android:id="@+id/txtCronometro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:00"
+            android:textSize="48sp"
+            android:textStyle="bold"
+            android:fontFamily="monospace"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnIniciarPausar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="▶ INICIAR"
+                android:backgroundTint="#388E3C"/>
+
+            <Button
+                android:id="@+id/btnProximoPeriodo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="PRÓXIMO PERÍODO"
+                android:backgroundTint="#1565C0"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginTop="8dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/secaoTimes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/secaoCronometro"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -47,8 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="+3 PONTOS"
-                android:backgroundTint="#d60000"
-                />
+                android:backgroundTint="#d60000"/>
 
             <Button
                 android:id="@+id/doisPontosA"
@@ -56,9 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="+2 PONTOS"
-                android:backgroundTint="#d60000"
-
-                />
+                android:backgroundTint="#d60000"/>
 
             <Button
                 android:id="@+id/tiroLivreA"
@@ -66,8 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="Tiro Livre"
-                android:backgroundTint="#d60000"
-                />
+                android:backgroundTint="#d60000"/>
         </LinearLayout>
 
         <View
@@ -92,8 +143,7 @@
                 android:textColor="#6200EE"
                 android:textSize="17sp"
                 android:fontFamily="sans-serif"
-                android:textStyle="bold"
-                />
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/placarTimeB"
@@ -110,21 +160,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="+3 PONTOS" />
+                android:text="+3 PONTOS"/>
 
             <Button
                 android:id="@+id/doisPontosB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="+2 PONTOS" />
+                android:text="+2 PONTOS"/>
 
             <Button
                 android:id="@+id/tiroLivreB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="Tiro Livre" />
+                android:text="Tiro Livre"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -140,6 +190,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="32dp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold"/>
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.example.mobile_basketball
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import android.widget.Button
@@ -12,13 +13,25 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-    private var pontuacaoTimeA: Int = 0;
-    private var pontuacaoTimeB: Int = 0;
+    private var pontuacaoTimeA: Int = 0
+    private var pontuacaoTimeB: Int = 0
 
     private lateinit var pTimeA: TextView
     private lateinit var pTimeB: TextView
     private var corPadraoTimeA: Int = Color.WHITE
     private var corPadraoTimeB: Int = Color.WHITE
+
+    private var periodoAtual: Int = 1
+    private val totalPeriodos: Int = 4
+    private val duracaoPeriodoMs: Long = 10 * 60 * 1000
+    private var tempoRestanteMs: Long = duracaoPeriodoMs
+    private var timerRodando: Boolean = false
+    private var cronometro: CountDownTimer? = null
+
+    private lateinit var txtPeriodo: TextView
+    private lateinit var txtCronometro: TextView
+    private lateinit var btnIniciarPausar: Button
+    private lateinit var btnProximoPeriodo: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +68,20 @@ class MainActivity : AppCompatActivity() {
         txtTimeA.text = nomeTimeA
         txtTimeB.text = nomeTimeB
 
+        txtPeriodo = findViewById(R.id.txtPeriodo)
+        txtCronometro = findViewById(R.id.txtCronometro)
+        btnIniciarPausar = findViewById(R.id.btnIniciarPausar)
+        btnProximoPeriodo = findViewById(R.id.btnProximoPeriodo)
+
+        atualizarExibicaoPeriodo()
+        atualizarExibicaoCronometro()
+
+        btnIniciarPausar.setOnClickListener {
+            if (timerRodando) pausarTimer() else iniciarTimer()
+        }
+
+        btnProximoPeriodo.setOnClickListener { proximoPeriodo() }
+
         val bTresPontosTimeA: Button = findViewById(R.id.tresPontosA)
         val bDoisPontosTimeA: Button = findViewById(R.id.doisPontosA)
         val bTLivreTimeA: Button = findViewById(R.id.tiroLivreA)
@@ -63,41 +90,96 @@ class MainActivity : AppCompatActivity() {
         val bTLivreTimeB: Button = findViewById(R.id.tiroLivreB)
         val bReiniciar: Button = findViewById(R.id.reiniciarPartida)
 
-
         bTresPontosTimeA.setOnClickListener { adicionarPontos(3, "A") }
-
         bDoisPontosTimeA.setOnClickListener { adicionarPontos(2, "A") }
-
         bTLivreTimeA.setOnClickListener { adicionarPontos(1, "A") }
-
         bTresPontosTimeB.setOnClickListener { adicionarPontos(3, "B") }
-
         bDoisPontosTimeB.setOnClickListener { adicionarPontos(2, "B") }
-
         bTLivreTimeB.setOnClickListener { adicionarPontos(1, "B") }
-
         bReiniciar.setOnClickListener { confirmarReinicio() }
     }
 
-    fun adicionarPontos(pontos: Int, time: String) {
-        if(time == "A"){
-            pontuacaoTimeA += pontos
-        }else {
-            pontuacaoTimeB += pontos
+    fun iniciarTimer() {
+        cronometro = object : CountDownTimer(tempoRestanteMs, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                tempoRestanteMs = millisUntilFinished
+                atualizarExibicaoCronometro()
+            }
 
+            override fun onFinish() {
+                tempoRestanteMs = 0
+                atualizarExibicaoCronometro()
+                timerRodando = false
+                btnIniciarPausar.text = "▶ INICIAR"
+                if (periodoAtual < totalPeriodos) {
+                    Toast.makeText(this@MainActivity, "Fim do ${txtPeriodo.text}!", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this@MainActivity, "Fim de jogo!", Toast.LENGTH_LONG).show()
+                    btnProximoPeriodo.isEnabled = false
+                }
+            }
+        }.start()
+        timerRodando = true
+        btnIniciarPausar.text = "⏸ PAUSAR"
+    }
+
+    fun pausarTimer() {
+        cronometro?.cancel()
+        timerRodando = false
+        btnIniciarPausar.text = "▶ CONTINUAR"
+    }
+
+    fun proximoPeriodo() {
+        if (periodoAtual >= totalPeriodos) {
+            Toast.makeText(this, "Já é o último período!", Toast.LENGTH_SHORT).show()
+            return
+        }
+        cronometro?.cancel()
+        timerRodando = false
+        periodoAtual++
+        tempoRestanteMs = duracaoPeriodoMs
+        atualizarExibicaoCronometro()
+        atualizarExibicaoPeriodo()
+        btnIniciarPausar.text = "▶ INICIAR"
+        if (periodoAtual == totalPeriodos) {
+            btnProximoPeriodo.isEnabled = false
+        }
+    }
+
+    fun atualizarExibicaoPeriodo() {
+        val ordinal = when (periodoAtual) {
+            1 -> "1º"
+            2 -> "2º"
+            3 -> "3º"
+            else -> "4º"
+        }
+        txtPeriodo.text = "$ordinal PERÍODO"
+    }
+
+    fun atualizarExibicaoCronometro() {
+        val minutos = (tempoRestanteMs / 1000) / 60
+        val segundos = (tempoRestanteMs / 1000) % 60
+        txtCronometro.text = String.format("%02d:%02d", minutos, segundos)
+    }
+
+    fun adicionarPontos(pontos: Int, time: String) {
+        if (time == "A") {
+            pontuacaoTimeA += pontos
+        } else {
+            pontuacaoTimeB += pontos
         }
         atualizaPlacar(time)
     }
 
-    fun atualizaPlacar(time: String){
-        if(time == "A"){
+    fun atualizaPlacar(time: String) {
+        if (time == "A") {
             pTimeA.setText(pontuacaoTimeA.toString())
             pTimeA.setTextColor(Color.parseColor("#d60000"))
 
             Handler(Looper.getMainLooper()).postDelayed({
                 pTimeA.setTextColor(corPadraoTimeA)
             }, 600)
-        }else {
+        } else {
             pTimeB.setText(pontuacaoTimeB.toString())
             pTimeB.setTextColor(Color.parseColor("#6200EE"))
 
@@ -120,9 +202,24 @@ class MainActivity : AppCompatActivity() {
 
     fun reiniciarPartida() {
         pontuacaoTimeA = 0
-        pTimeA.setText(pontuacaoTimeA.toString())
+        pTimeA.setText("0")
         pontuacaoTimeB = 0
-        pTimeB.setText(pontuacaoTimeB.toString())
+        pTimeB.setText("0")
+
+        cronometro?.cancel()
+        timerRodando = false
+        periodoAtual = 1
+        tempoRestanteMs = duracaoPeriodoMs
+        atualizarExibicaoCronometro()
+        atualizarExibicaoPeriodo()
+        btnIniciarPausar.text = "▶ INICIAR"
+        btnProximoPeriodo.isEnabled = true
+
         Toast.makeText(this, "Placar reiniciado", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cronometro?.cancel()
     }
 }
